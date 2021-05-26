@@ -7,7 +7,7 @@ bin-release/
 # Other files and folders
 .settings/
 .vs/
-config.json
+./discord-bot-noblev/discord-bot-noblev/config.json
 
 # Executables
 *.swf
@@ -19,3 +19,5 @@ config.json
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
+
+discord-bot-noblev/discord-bot-noblev/config.json
