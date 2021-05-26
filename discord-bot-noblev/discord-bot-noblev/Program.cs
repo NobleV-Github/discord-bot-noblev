@@ -22,6 +22,7 @@ namespace discord_bot_noblev
             //Client Events
             Client = new DiscordSocketClient();
             Client.MessageReceived += Events.MessageReceived;
+            Client.UserJoined += Events.UserJoined;
 
             //Gets Token from Json
             var token = JObject.Parse(Json)["api"]["token"].ToString();
