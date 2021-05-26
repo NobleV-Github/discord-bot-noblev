@@ -29,7 +29,17 @@ namespace discord_bot_noblev
                         {
                             Title = "Information",
                             Description =
-                                "Server\n➥ IP-Adresse: 45.138.50.38\n➥ Webseite: https://www.atomic-roleplay.eu/n➥ Teamspeak³: ts.atomic-rp.de\n\nNützliches\n➥ Server Status in #「:crystal_ball:」status\n➥ Alle Tastenkürzel in #「:keyboard:」tastenbelegung1\n➥ Hilfe zu Saltychat in #「:satellite:」saltychat-installieren\n➥ Alles zu Spenden in #「:credit_card:」spenden\n➥ Alle Regelwerkänderungen in #「:pushpin:」regelwerk-änderungen\n",
+                                @"Server
+                                ➥ Fivem: fivem.noblev.de
+                                ➥ Webseite: https://www.noblev.de
+                                ➥ Teamspeak³: ts.noblev.de
+
+                                Nützliches
+                                ➥ Server Status in <#842376024650285109>
+                                ➥ Alle Tastenkürzel in #「:keyboard:」tastenbelegung
+                                ➥ Alles zu Spenden in <#842375727029944330>
+                                ➥ Alle Regelwerkänderungen in <#842374922017964042>
+                                ",
                             Color = Color.Gold
                         };
 
