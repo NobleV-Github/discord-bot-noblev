@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -17,8 +18,12 @@ namespace discord_bot_noblev
             //If the Author is a bot it leaves method
             if (message.Author.IsBot) { return; }
             
+            var guild = ((SocketGuildChannel)message.Channel).Guild;
+            var user = guild.GetUser(message.MentionedUsers.First().Id);
+            var config = JObject.Parse(Program.Json)["mute_role"].ToString();
+
             //If the Message starts with the set Prefix
-            if (message.Content.StartsWith("!"))
+            if (message.Content.StartsWith(JObject.Parse(Program.Json)["prefix"].ToString()))
             {
                 switch (message.Content.Remove(0, 1).Split(' ')[0])
                 {
@@ -29,11 +34,29 @@ namespace discord_bot_noblev
                         {
                             Title = "Information",
                             Description =
-                                "Server\n➥ IP-Adresse: 45.138.50.38\n➥ Webseite: https://www.atomic-roleplay.eu/n➥ Teamspeak³: ts.atomic-rp.de\n\nNützliches\n➥ Server Status in #「:crystal_ball:」status\n➥ Alle Tastenkürzel in #「:keyboard:」tastenbelegung1\n➥ Hilfe zu Saltychat in #「:satellite:」saltychat-installieren\n➥ Alles zu Spenden in #「:credit_card:」spenden\n➥ Alle Regelwerkänderungen in #「:pushpin:」regelwerk-änderungen\n",
+                                @"Server
+                                ➥ Fivem: fivem.noblev.de
+                                ➥ Webseite: https://www.noblev.de
+                                ➥ Teamspeak³: ts.noblev.de
+
+                                Nützliches
+                                ➥ Server Status in <#842376024650285109>
+                                ➥ Alle Tastenkürzel in #「:keyboard:」tastenbelegung
+                                ➥ Alles zu Spenden in <#842375727029944330>
+                                ➥ Alle Regelwerkänderungen in <#842374922017964042>
+                                ",
                             Color = Color.Gold
                         };
 
                         await message.Channel.SendMessageAsync("", false, embed.Build());
+                        break;
+                    case "mute":
+                        await user.AddRoleAsync(ulong.Parse(config));
+                        await message.Channel.SendMessageAsync($"{user.Username} has been muted");
+                        break;
+                    case "unmute":
+                        await user.RemoveRoleAsync(ulong.Parse(config));
+                        await message.Channel.SendMessageAsync($"{user.Username} has been unmuted");
                         break;
                 }
             }
