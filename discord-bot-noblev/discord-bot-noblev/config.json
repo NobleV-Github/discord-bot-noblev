@@ -1,0 +1,8 @@
+{
+  "api": {
+    "token": "discord bot token"
+  },
+  "prefix": "",
+  "auto_role": "",
+  "mute_role": ""
+} 

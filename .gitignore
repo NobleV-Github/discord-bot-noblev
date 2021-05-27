@@ -7,14 +7,17 @@ bin-release/
 # Other files and folders
 .settings/
 .vs/
+./discord-bot-noblev/discord-bot-noblev/config.json
 
 # Executables
 *.swf
 *.air
 *.ipa
 *.apk
-config.json
+
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
+
+discord-bot-noblev/discord-bot-noblev/config.json
