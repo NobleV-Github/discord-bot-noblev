@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -17,8 +18,12 @@ namespace discord_bot_noblev
             //If the Author is a bot it leaves method
             if (message.Author.IsBot) { return; }
             
+            var guild = ((SocketGuildChannel)message.Channel).Guild;
+            var user = guild.GetUser(message.MentionedUsers.First().Id);
+            var config = JObject.Parse(Program.Json)["mute_role"].ToString();
+
             //If the Message starts with the set Prefix
-            if (message.Content.StartsWith("!"))
+            if (message.Content.StartsWith(JObject.Parse(Program.Json)["prefix"].ToString()))
             {
                 switch (message.Content.Remove(0, 1).Split(' ')[0])
                 {
@@ -44,6 +49,14 @@ namespace discord_bot_noblev
                         };
 
                         await message.Channel.SendMessageAsync("", false, embed.Build());
+                        break;
+                    case "mute":
+                        await user.AddRoleAsync(ulong.Parse(config));
+                        await message.Channel.SendMessageAsync($"{user.Username} has been muted");
+                        break;
+                    case "unmute":
+                        await user.RemoveRoleAsync(ulong.Parse(config));
+                        await message.Channel.SendMessageAsync($"{user.Username} has been unmuted");
                         break;
                 }
             }

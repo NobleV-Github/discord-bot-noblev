@@ -15,12 +15,13 @@ namespace discord_bot_noblev
 
         public static DiscordSocketClient Client;
         
-        public static readonly string Json = File.ReadAllText(@"..\..\..\..\..\config.json");
+        public static readonly string Json = File.ReadAllText(@"..\..\..\config.json");
 
         private async Task MainAsync()
         {
             //Client Events
             Client = new DiscordSocketClient();
+            Client.Log += Events.Log;
             Client.MessageReceived += Events.MessageReceived;
             Client.UserJoined += Events.UserJoined;
 
