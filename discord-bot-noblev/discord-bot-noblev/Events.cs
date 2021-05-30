@@ -17,10 +17,9 @@ namespace discord_bot_noblev
         {
             //If the Author is a bot it leaves method
             if (message.Author.IsBot) { return; }
-            
-            var guild = ((SocketGuildChannel)message.Channel).Guild;
-            var user = guild.GetUser(message.MentionedUsers.First().Id);
-            var config = JObject.Parse(Program.Json)["mute_role"].ToString();
+
+            bool mute = false;
+          
 
             //If the Message starts with the set Prefix
             if (message.Content.StartsWith(JObject.Parse(Program.Json)["prefix"].ToString()))
@@ -30,7 +29,7 @@ namespace discord_bot_noblev
                     case "help":
                         await Log(new LogMessage(LogSeverity.Info, "help", $"Help by {message.Author.Mention}"));
 
-                        var embed = new EmbedBuilder()
+                        var help = new EmbedBuilder()
                         {
                             Title = "Information",
                             Description =
@@ -48,15 +47,48 @@ namespace discord_bot_noblev
                             Color = Color.Gold
                         };
 
-                        await message.Channel.SendMessageAsync("", false, embed.Build());
+                        await message.Channel.SendMessageAsync("", false, help.Build());
+                        break;
+                    case "command":
+                        var commands = new EmbedBuilder()
+                        {
+                            Title = "Commands",
+                            Description =
+                                @"!help     = Get serverinfo
+                                  !mute     = Mute user
+                                  !unmute   = Unmute user
+                                  !command  = This message
+                                ",
+                            Color = Color.Gold
+                        };
+
+                        await message.Channel.SendMessageAsync("", false, commands.Build());
                         break;
                     case "mute":
-                        await user.AddRoleAsync(ulong.Parse(config));
-                        await message.Channel.SendMessageAsync($"{user.Username} has been muted");
-                        break;
+                        mute = true;
+                        goto case "unmute";
                     case "unmute":
-                        await user.RemoveRoleAsync(ulong.Parse(config));
-                        await message.Channel.SendMessageAsync($"{user.Username} has been unmuted");
+                        var guild = ((SocketGuildChannel)message.Channel).Guild;
+                        SocketGuildUser user;
+                        try
+                        {
+                            user = guild.GetUser(message.MentionedUsers.First().Id);
+                        }
+                        catch (Exception)
+                        {
+                            goto case "command";
+                        }
+                        var config = JObject.Parse(Program.Json)["mute_role"].ToString();
+                        if (mute)
+                        {
+                            await user.AddRoleAsync(ulong.Parse(config));
+                            await message.Channel.SendMessageAsync($"{user.Username} has been muted");
+                        }
+                        else
+                        {
+                            await user.RemoveRoleAsync(ulong.Parse(config));
+                            await message.Channel.SendMessageAsync($"{user.Username} has been unmuted");
+                        }
                         break;
                 }
             }
